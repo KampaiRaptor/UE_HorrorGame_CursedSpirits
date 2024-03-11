@@ -74,5 +74,6 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 .idea/*
-.vs/
+.vs/*
+Content/art/*
 .vsconfig
