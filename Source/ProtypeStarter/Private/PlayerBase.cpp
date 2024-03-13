@@ -62,11 +62,12 @@ void APlayerBase::AutoHeal()
 
 void APlayerBase::DecreaseLightRadius()
 {
-	if (PointLight->AttenuationRadius <= 150.0f)
+	if (PointLight->AttenuationRadius <= 250.0f)
 	{
 		return;
 	}
-	PointLight->SetAttenuationRadius(PointLight->AttenuationRadius - 5.0f);
+	const float Radius = PointLight->AttenuationRadius;
+	PointLight->SetAttenuationRadius(Radius -5.0f * (Radius*0.0005f));
 }
 
 bool APlayerBase::CanAttack()
@@ -79,7 +80,7 @@ void APlayerBase::DealDamage(float Damage)
 	Health -= Damage;
 	if (Health <= 0)
 	{
-		//Death
+		Death();
 	}
 }
 

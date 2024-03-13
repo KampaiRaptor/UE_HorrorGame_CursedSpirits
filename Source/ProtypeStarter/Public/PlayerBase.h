@@ -72,6 +72,9 @@ public:
 
 	void DI_SpiritKilled_Implementation() override;
 	void DI_DrainHealth_Implementation() override;
+
+	UFUNCTION(BlueprintImplementableEvent, Category="attacks")
+	void Death();
 	
 protected:
 	// Called to bind functionality to input
