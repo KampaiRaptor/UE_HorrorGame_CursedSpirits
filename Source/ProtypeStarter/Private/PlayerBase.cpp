@@ -2,12 +2,19 @@
 
 #include "PlayerBase.h"
 #include "Components/ArrowComponent.h"
+#include "Components/PointLightComponent.h"
+#include "Engine/DamageEvents.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 APlayerBase::APlayerBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	PointLight=CreateDefaultSubobject<UPointLightComponent>(TEXT("PointLight"));
+	PointLight->SetupAttachment(RootComponent);
+	SetActorTickInterval(0.05f);
 }
 
 // Called when the game starts or when spawned
@@ -20,6 +27,8 @@ void APlayerBase::BeginPlay()
 void APlayerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AutoHeal();
+	DecreaseLightRadius();
 }
 
 void APlayerBase::Attack()
@@ -32,8 +41,32 @@ void APlayerBase::Attack()
 	const FVector End = TraceArrowLocation->GetForwardVector() * 200 + Start;
 
 	GetWorld()->SweepSingleByChannel(Hit, Start, End, FQuat::Identity, ECollisionChannel::ECC_Visibility, FCollisionShape::MakeSphere(20.f), CollisionParams);
-	
-	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.0f);
+
+	if (Hit.bBlockingHit)
+	{
+		Hit.GetActor()->TakeDamage(10.0f, FDamageEvent(), GetController(), this);
+	}
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.0f);
+}
+
+void APlayerBase::AutoHeal()
+{
+	if (GetCharacterMovement()->Velocity.Length() <= 1.0f && bCanAttack == true)
+	{
+		if (Health < 100)
+		{
+			Health += 0.2f;
+		}
+	}
+}
+
+void APlayerBase::DecreaseLightRadius()
+{
+	if (PointLight->AttenuationRadius <= 150.0f)
+	{
+		return;
+	}
+	PointLight->SetAttenuationRadius(PointLight->AttenuationRadius - 5.0f);
 }
 
 bool APlayerBase::CanAttack()
@@ -61,6 +94,30 @@ void APlayerBase::StopAttack()
 {
 	bCanAttack = true;
 	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
+}
+
+void APlayerBase::AddLightRadius(float Intensity)
+{
+	PointLight->SetAttenuationRadius(PointLight->AttenuationRadius + Intensity);
+}
+
+TArray<float> APlayerBase::GetStats()
+{
+	TArray<float> Stats;
+	Stats.Add(Health);
+	Stats.Add(PointLight->AttenuationRadius);
+	return Stats;
+}
+
+void APlayerBase::DI_SpiritKilled_Implementation()
+{
+	IDamageInterface::DI_SpiritKilled_Implementation();
+}
+
+void APlayerBase::DI_DrainHealth_Implementation()
+{
+	DealDamage(0.1f);
+	return IDamageInterface::DI_DrainHealth_Implementation();
 }
 
 // Called to bind functionality to input

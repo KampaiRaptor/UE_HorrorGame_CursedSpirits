@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageInterface.h"
 #include "GameFramework/Character.h"
 #include "PlayerBase.generated.h"
 
 class UArrowComponent;
+class UPointLightComponent;
 
 UCLASS()
-class PROTYPESTARTER_API APlayerBase : public ACharacter
+class PROTYPESTARTER_API APlayerBase : public ACharacter, public IDamageInterface
 {
 	GENERATED_BODY()
 
@@ -34,12 +36,15 @@ private:
 
 	UFUNCTION(Category="Attacks")
 	void Attack();
-
-	UPROPERTY(VisibleDefaultsOnly, Category="Attacks")
-	float AttackProgress = 0.0f;
 	
 	FTimerHandle AttackTimerHandle;
 
+	UFUNCTION(Category="Stats")
+	void AutoHeal();
+
+	UFUNCTION(Category="Attacks")
+	void DecreaseLightRadius();
+	
 public:
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	bool CanAttack();
@@ -55,7 +60,20 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Stats")
 	TObjectPtr<UArrowComponent> TraceArrowLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Attacks")
+	TObjectPtr<UPointLightComponent> PointLight;
+
+	UFUNCTION(BlueprintCallable, Category = "Attacks")
+	void AddLightRadius(float Intensity);
+
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	TArray<float> GetStats();
+
+	void DI_SpiritKilled_Implementation() override;
+	void DI_DrainHealth_Implementation() override;
 	
+protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
