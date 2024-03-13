@@ -77,3 +77,4 @@ DerivedDataCache/*
 .vs/*
 Content/art/*
 .vsconfig
+Plugins/*
