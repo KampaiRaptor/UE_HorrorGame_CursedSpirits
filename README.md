@@ -17,6 +17,8 @@ Altar
 ROG Modular Medieval Accessories and Robes
 (https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/en-US/product/rog-modular-medieval-accessories-and-robes)
 
+Fire / Spells / Traps VFX Pack
+(https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/en-US/product/fire-spells-traps-vfx-pack)
 
 ## License
 
