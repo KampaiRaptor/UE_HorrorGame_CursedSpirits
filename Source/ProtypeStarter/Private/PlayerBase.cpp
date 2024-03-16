@@ -67,7 +67,7 @@ void APlayerBase::DecreaseLightRadius()
 		return;
 	}
 	const float Radius = PointLight->AttenuationRadius;
-	PointLight->SetAttenuationRadius(Radius -5.0f * (Radius*0.0005f));
+	PointLight->SetAttenuationRadius(Radius -10.0f * (Radius*0.0005f));
 }
 
 bool APlayerBase::CanAttack()
