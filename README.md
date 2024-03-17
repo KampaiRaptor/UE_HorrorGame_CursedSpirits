@@ -1,8 +1,9 @@
 # Cursed Spirits
-
+Open Sourced Submission to (https://itch.io/jam/frenzy-phobia-horror)
 
 ## Gameplay
 
+![CursedSpiritsGameplay](https://github.com/KampaiRaptor/UE_HorrorGame_CursedSpirits/assets/120315901/eb5f03a0-e906-4fed-b521-35267aa029f8)
 
 ## License
 
