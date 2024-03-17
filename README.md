@@ -1,5 +1,5 @@
 # Cursed Spirits
-Open Sourced Submission to (https://itch.io/jam/frenzy-phobia-horror)
+Open Sourced Submission to https://itch.io/jam/frenzy-phobia-horror
 
 ## Gameplay
 
